@@ -1,0 +1,67 @@
+// ==================================================================================
+// ContactabilityService API
+//
+// Provides contact information for a specific order. This service allows
+// retrieving the contact details of passengers associated with an order.
+//
+// ==================================================================================
+
+syntax = "proto3";
+
+package contactability.v1;
+
+option java_multiple_files = true;
+option java_outer_classname = "ContactabilityProto";
+option java_package = "cl.latam.proto.contactability.v1";
+
+// ==============================================================================
+// Service: ContactabilityService
+// ==============================================================================
+
+// ContactabilityService provides methods to retrieve contact details of passengers.
+service ContactabilityService {
+  // Returns contact information for passengers associated with the order.
+  rpc GetContactabilityByOrder(GetByOrderRequest) returns (GetContactResponse) {}
+}
+
+// ==============================================================================
+// Request and Response Messages
+// ==============================================================================
+
+// Request message for retrieving contact details of an order.
+message GetByOrderRequest {
+  string orderId = 1; // Unique identifier of the order.
+  optional string ticketNumber = 2; //Identifier of the ticket.
+}
+
+// Response message containing the contact details of the passengers.
+message GetContactResponse {
+  repeated OperationalContact passengers = 1; // List of passengers for the order.
+}
+
+// ==============================================================================
+// Supporting Data Structures
+// ==============================================================================
+
+// Structure containing email contact details.
+message Email {
+  repeated string operational = 1; // Operational email addresses of the passenger.
+  repeated string contingency = 2; // Contingency email addresses of the passenger.
+}
+
+// Structure containing phone contact details.
+message Phone {
+  repeated string operational = 1; // Operational phone addresses of the passenger.
+  repeated string contingency = 2; // Contingency phone addresses of the passenger.
+}
+
+// Operational contact information of a passenger.
+message OperationalContact {
+  string id = 1; // Unique identifier of the contact.
+  string firstName = 2; // Passenger's first name.
+  string lastName = 3; // Passenger's last name.
+  string entityId = 4; // Associated entity_id.
+  string type = 5; // Type of contact.
+  Email emails = 6; // Associated email addresses.
+  Phone phones = 7; // Associated phone numbers.
+}
