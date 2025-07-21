@@ -1,8 +1,20 @@
 spring:
   application:
     name: Contactability Test
-  grpc:
-    client:
-      channels:
-        contactability:
-          address: ${CONTACTABILITY_GRPC_ADDRESS:0.0.0.0:9090}
+  main:
+    headless: true
+
+contactability:
+  service:
+    host: contactability.appslatam.com
+    port: 443
+    audience: 32555940559.apps.googleusercontent.com
+  test:
+    max-api-calls: ${CONTACTABILITY_TEST_MAX_API_CALLS:100}
+
+logging:
+  level:
+    root: WARN
+    cl:
+      latam:
+        contactabilitytest: INFO
