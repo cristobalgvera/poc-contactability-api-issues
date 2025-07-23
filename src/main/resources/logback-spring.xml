@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+  <!-- Paths -->
+  <property name="LOG_DIR" value="/var/log/contactabilitytest" />
+  <property name="LOG_FILE" value="${LOG_DIR}/log.log" />
+
+  <!-- Console Appender (JSON) -->
+  <appender name="JSON_CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder class="net.logstash.logback.encoder.LogstashEncoder" />
+  </appender>
+
+  <!-- File Appender (JSON + Rolling) -->
+  <appender name="JSON_FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${LOG_FILE}</file>
+
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <fileNamePattern>${LOG_DIR}/log.%d{yyyy-MM-dd}.log</fileNamePattern>
+      <maxHistory>14</maxHistory> <!-- Keep 14 days of logs -->
+    </rollingPolicy>
+
+    <encoder class="net.logstash.logback.encoder.LogstashEncoder" />
+  </appender>
+
+  <!-- Root Logger -->
+  <root level="INFO">
+    <appender-ref ref="JSON_CONSOLE" />
+    <appender-ref ref="JSON_FILE" />
+  </root>
+
+  <!-- Fine-tune log levels -->
+  <logger name="org.springframework" level="WARN" />
+  <logger name="org.hibernate" level="ERROR" />
+  <logger name="cl.latam.contactabilitytest" level="DEBUG" />
+
+</configuration>

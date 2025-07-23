@@ -3,6 +3,11 @@ spring:
     name: Contactability Test
   main:
     headless: true
+    banner-mode: off
+  cloud:
+    gcp:
+      logging:
+        enabled: true
 
 contactability:
   service:
@@ -11,10 +16,3 @@ contactability:
     audience: 32555940559.apps.googleusercontent.com
   test:
     max-api-calls: ${CONTACTABILITY_TEST_MAX_API_CALLS:100}
-
-logging:
-  level:
-    root: WARN
-    cl:
-      latam:
-        contactabilitytest: INFO
