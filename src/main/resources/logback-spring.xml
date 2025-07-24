@@ -1,14 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
+  <property name="LOG_DIR" value="/var/log" />
+
   <appender name="JSON_CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
-    <encoder class="net.logstash.logback.encoder.LogstashEncoder" />
+    <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+      <customFields>{"env":"${spring_profiles_active:-unknown}"}</customFields>
+      <includeMdc>true</includeMdc>
+      <severityKey>severity</severityKey>
+    </encoder>
+  </appender>
+
+  <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+    <file>${LOG_DIR}/contactabilitytest-${spring_profiles_active}.log</file>
+    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+      <fileNamePattern>${LOG_DIR}/contactabilitytest-${spring_profiles_active}.%d{yyyy-MM-dd}.log</fileNamePattern>
+      <maxHistory>7</maxHistory>
+    </rollingPolicy>
+    <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+      <customFields>{"env":"${spring_profiles_active:-unknown}"}</customFields>
+      <severityKey>severity</severityKey>
+      <includeMdc>true</includeMdc>
+    </encoder>
   </appender>
 
   <root level="INFO">
     <appender-ref ref="JSON_CONSOLE" />
+    <appender-ref ref="FILE" />
   </root>
 
   <logger name="org.springframework" level="WARN" />
-  <logger name="org.hibernate" level="ERROR" />
   <logger name="cl.latam.contactabilitytest" level="DEBUG" />
 </configuration>
