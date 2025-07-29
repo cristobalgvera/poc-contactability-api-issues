@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Service;
 
+import cl.latam.contactabilitytest.features.contactability.ordersgenerator.OrdersGenerator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -17,22 +18,18 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ContactabilityConsoleRunner implements CommandLineRunner {
   private final ContactabilityService contactabilityService;
+  private final OrdersGenerator ordersGenerator;
 
   @Value("${contactability.test.max-api-calls}")
   private int MAX_API_CALLS;
 
   @Override
   public void run(String... args) throws Exception {
-    var random = new Random();
-
-    var orderIds = IntStream.range(1, random.nextInt(MAX_API_CALLS))
-        .map(i -> random.nextInt(1_001) + 1)
-        .boxed()
-        .map(n -> String.format("LA%010d", n))
-        .collect(Collectors.toList());
+    var orderIds = ordersGenerator.generateOrderIds(MAX_API_CALLS);
 
     log.info("There are {} orders to process", orderIds.size());
 
+    var random = new Random();
     var atomicCounter = new AtomicInteger();
 
     // INFO: Simulate processing time similar to the use case
