@@ -35,7 +35,7 @@ public class ContactabilityConsoleRunner implements CommandLineRunner {
     // INFO: Simulate processing time similar to the use case
     orderIds.parallelStream().forEach(orderId -> {
       try {
-        Thread.sleep(random.nextInt(30_000));
+        Thread.sleep(random.nextInt(5_000));
       } catch (InterruptedException e) {
         Thread.currentThread().interrupt();
         log.error("Thread interrupted while processing order ID: {}", orderId, e);
